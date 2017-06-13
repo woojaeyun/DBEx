@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     Button binit,bins,bsel;
@@ -35,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
                 sqlDB=myHelper.getWritableDatabase();
                 myHelper.onUpgrade(sqlDB, 1, 2);
                 sqlDB.close();
+            }
+        });
+        bins.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sqlDB=myHelper.getWritableDatabase();
+                String sql="insert into playerTalbe values('"+editName.getText()+"',"+editCount.getText()+")";
+                sqlDB.execSQL(sql);
+                sqlDB.close();
+                Toast.makeText(MainActivity.this,"저장완료",Toast.LENGTH_LONG).show();
             }
         });
     }
