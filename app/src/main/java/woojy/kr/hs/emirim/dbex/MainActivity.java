@@ -5,17 +5,42 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
+    Button binit,bins,bsel;
+    EditText editName,editCount,editrCount,editrName;
+    MyDBHelper myHelper;
+    SQLiteDatabase sqlDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        binit =(Button)findViewById(R.id.but_init);
+        bins =(Button)findViewById(R.id.but_insert);
+        bsel =(Button)findViewById(R.id.but_select);
+        editName = (EditText)findViewById(R.id.edit_group_name);
+        editCount = (EditText)findViewById(R.id.edit_count);
+        editrCount = (EditText)findViewById(R.id.edit_result_count);
+        editrName = (EditText)findViewById(R.id.edit_result_name);
+
+        //DB 생성
+        myHelper = new MyDBHelper(this);
+        binit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sqlDB=myHelper.getWritableDatabase();
+                myHelper.onUpgrade(sqlDB, 1, 2);
+                sqlDB.close();
+            }
+        });
     }
     class MyDBHelper extends SQLiteOpenHelper{
 
-        public MyDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        public MyDBHelper(Context context) {
             super(context, "playerDB", null, 1);
         } //DB 생성부분
         //player 라는 이름의 테이블 생성
